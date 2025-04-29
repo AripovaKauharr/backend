@@ -1,26 +1,59 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  HttpCode,
+  Header,
+} from '@nestjs/common';
 import { CallService } from './calls.service';
 import { CreateCallDto } from './dto/create-call.dto';
+import { IsOptional, IsInt, Min, IsIn, Max } from 'class-validator';
+import { ValidationPipe } from '@nestjs/common';
+
+class GetCallsQueryDto {
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  page?: number = 1;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  limit?: number = 10;
+
+  @IsOptional()
+  @IsIn(['completed', 'rejected', 'missed'])
+  status?: string;
+
+  @IsOptional()
+  from?: string;
+
+  @IsOptional()
+  to?: string;
+
+  @IsOptional()
+  category?: string;
+
+  @IsOptional()
+  agent_id?: string;
+}
 
 @Controller('calls')
 export class CallController {
   constructor(private readonly callService: CallService) {}
 
   @Post()
+  @HttpCode(201)
   create(@Body() callDto: CreateCallDto) {
     return this.callService.createCall(callDto);
   }
+
   @Get()
-  async getCalls(
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
-    @Query('status') status?: string,
-  ) {
-    try {
-      return await this.callService.getCalls({ page, limit, status });
-    } catch (error) {
-      console.error('Error in getCalls controller:', error);
-      throw new Error('Ошибка при получении звонков');
-    }
+  @Header('Cache-Control', 'no-cache')
+  async getCalls(@Query(ValidationPipe) query: GetCallsQueryDto) {
+    return this.callService.getCalls(query);
   }
 }

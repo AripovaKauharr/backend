@@ -9,5 +9,6 @@ import { CallController } from './calls.controller';
   imports: [SequelizeModule.forFeature([Call])],
   controllers: [CallController],
   providers: [CallService, CallRepository],
+  exports: [SequelizeModule],
 })
 export class CallsModule {}

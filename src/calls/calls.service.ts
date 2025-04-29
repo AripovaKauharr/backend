@@ -40,9 +40,9 @@ export class CallService {
   }) {
     try {
       // Валидация параметров
-      if (page < 1) throw new Error('Page number must be greater than 0');
-      if (limit < 1 || limit > 100)
-        throw new Error('Limit must be between 1 and 100');
+      // if (page < 1) throw new Error('Page number must be greater than 0');
+      // if (limit < 1 || limit > 100)
+      //   throw new Error('Limit must be between 1 and 100');
 
       const where: WhereOptions<Call> = {};
 

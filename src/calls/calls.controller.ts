@@ -9,19 +9,14 @@ import {
 } from '@nestjs/common';
 import { CallService } from './calls.service';
 import { CreateCallDto } from './dto/create-call.dto';
-import { IsOptional, IsInt, Min, IsIn, Max } from 'class-validator';
+import { IsOptional, IsIn } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
 class GetCallsQueryDto {
   @IsOptional()
-  @IsInt()
-  @Min(1)
   page?: number = 1;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
-  @Max(100)
   limit?: number = 10;
 
   @IsOptional()

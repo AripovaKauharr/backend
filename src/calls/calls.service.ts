@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Op, WhereOptions } from 'sequelize';
 import { Call } from './call.model';
 import { CreateCallDto } from './dto/create-call.dto';
-// const { gte, lte } = Op;
 @Injectable()
 export class CallService {
   constructor(
@@ -39,14 +38,8 @@ export class CallService {
     agent_id?: string;
   }) {
     try {
-      // Валидация параметров
-      // if (page < 1) throw new Error('Page number must be greater than 0');
-      // if (limit < 1 || limit > 100)
-      //   throw new Error('Limit must be between 1 and 100');
-
       const where: WhereOptions<Call> = {};
 
-      // Фильтр по статусу
       if (status) {
         if (!['completed', 'rejected', 'missed'].includes(status)) {
           throw new Error('Invalid status value');
@@ -54,17 +47,14 @@ export class CallService {
         where.status = status;
       }
 
-      // Фильтр по категории
       if (category) {
         where.category = category;
       }
 
-      // Фильтр по агенту
       if (agent_id) {
         where.agent_id = agent_id;
       }
 
-      // Фильтр по дате (полностью типизированная версия)
       if (from || to) {
         const dateConditions: {
           [Op.gte]?: Date;

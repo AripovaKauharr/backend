@@ -49,7 +49,7 @@ export class AnalyticsService {
   private getCallsDistributionByHour(calls: Call[]) {
     const distribution = Array(24).fill(0);
     calls.forEach((call) => {
-      const hour = new Date(call.start_time).getHours(); // Используем start_time
+      const hour = new Date(call.start_time).getHours();
       distribution[hour]++;
     });
     return distribution.map((count: number, hour) => ({ hour, count }));
@@ -64,7 +64,6 @@ export class AnalyticsService {
     };
 
     calls.forEach((call) => {
-      // Типизируем status как 'completed' | 'missed' | 'rejected'
       if (Object.prototype.hasOwnProperty.call(counts, call.status)) {
         counts[call.status]++;
       }
@@ -78,7 +77,7 @@ export class AnalyticsService {
   }
 
   private getAverageDurationByCategory(calls: Call[]) {
-    const map: Record<string, { total: number; count: number }> = {}; // Указываем тип для map
+    const map: Record<string, { total: number; count: number }> = {};
 
     calls.forEach((call) => {
       if (call.status !== 'completed') return;

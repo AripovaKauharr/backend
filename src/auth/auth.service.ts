@@ -24,15 +24,11 @@ export class AuthService {
 
   async login(userDto: CreateUserDto) {
     const user = await this.validateUser(userDto);
-    // const user = await this.userService.findOne({
-    //   where: { email: userDto.email },
-    //   select: ['id', 'email', 'role'], // Важно!
-    // });
 
     if (!user) {
       throw new UnauthorizedException('Пользователь не найден');
     }
-    return this.generateToken(user); // Теперь user точно не null
+    return this.generateToken(user);
   }
 
   async registration(userDto: CreateUserDto) {
@@ -54,7 +50,7 @@ export class AuthService {
   private async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.findOne({
       where: { email: userDto.email },
-      select: ['id', 'email', 'role'], // Важно!
+      select: ['id', 'email', 'role'],
     });
     if (!user) {
       throw new UnauthorizedException('Некорректный email или пароль');

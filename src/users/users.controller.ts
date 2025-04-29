@@ -13,7 +13,6 @@ import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './user.model';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { AddRoleDto } from './dto/add-role.dto';
 
 @ApiTags('UserTag')
 @Controller('users')
@@ -27,18 +26,13 @@ export class UsersController {
     return this.usersService.createUser(userDto);
   }
 
-  @ApiOperation({ summary: 'Получение списка пользователей' })
+  @ApiOperation({
+    summary: 'Получение списка пользователей с возможностью поиска',
+  })
   @ApiResponse({ status: 200, type: [User] })
   @Get()
-  getAllUser() {
-    return this.usersService.getAllUsers();
-  }
-
-  @ApiOperation({ summary: 'Поиск пользователей' })
-  @ApiResponse({ status: 200, type: [User] })
-  @Get('search')
-  search(@Query('query') query: string) {
-    return this.usersService.searchUsers(query);
+  getAllUser(@Query('search') search?: string) {
+    return this.usersService.getAllUsers(search);
   }
 
   @ApiOperation({ summary: 'Обновление пользователя' })
@@ -54,10 +48,4 @@ export class UsersController {
   delete(@Param('id') id: number) {
     return this.usersService.deleteUser(id);
   }
-  // @ApiOperation({ summary: 'Выдача роли' })
-  // @ApiResponse({ status: 200, type: [User] })
-  // @Get('role')
-  // addRole(@Body() dto: AddRoleDto) {
-  //   return this.usersService.addRole(dto);
-  // }
 }

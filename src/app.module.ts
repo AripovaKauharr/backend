@@ -11,6 +11,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       envFilePath: '.env',
     }),
     SequelizeModule.forRoot({
@@ -22,6 +23,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
       database: process.env.POSTGRES_DB,
       models: [User, Call],
       autoLoadModels: true,
+      synchronize: true,
     }),
     SequelizeModule.forFeature([Call]),
     CallsModule,
